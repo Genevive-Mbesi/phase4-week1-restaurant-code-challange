@@ -29,8 +29,10 @@ pip install -r requirements.txt
 
 ## Usage
 Running the Server
+
 To start the Flask server, run the following command:
 python app.py
+
 The server will start, and you can access the API at http://localhost:5000.
 
 ## Testing Endpoints
@@ -40,12 +42,13 @@ Use a tool like Postman or curl to test the API endpoints.
 The API uses three main database models:
 
 Restaurant: Represents a restaurant with a name and an address. Restaurants can offer multiple pizzas.
+
 Pizza: Represents a type of pizza with a name and ingredients. Pizzas can be offered by multiple restaurants.
+
 RestaurantPizza: Connects restaurants and pizzas and includes the price for each pizza at a specific restaurant.
 
 ## Validations
 RestaurantPizza Model: Price validation enforces that the price is between 1 and 30.
+
 Restaurant Model: Name validation ensures it's less than 50 characters in length and enforces uniqueness.
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
