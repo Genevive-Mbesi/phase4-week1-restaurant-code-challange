@@ -6,6 +6,12 @@ from .models import Pizza
 from .models import RestaurantPizza
 from datetime import datetime
 
+class PizzaResource(Resource):
+    def get(self):
+        pizzas = Pizza.query.all()
+        pizzas_dict =  [{"id": pizza.id, "name": pizza.name, "ingredients": pizza.ingredients } for pizza in pizzas ]
+        response = make_response(jsonify(pizzas_dict), 200)
+        return response
 
 # Define the routes and associated resources
 class RestaurantsResource(Resource):
@@ -32,8 +38,20 @@ class RestaurantByIdResource(Resource):
             response = make_response(jsonify(restaurant_dict), 200)
             return response
         else:
-            response = make_response(jsonify({ "error": "Restaurant not found"}), 200)
+            response = make_response(jsonify({ "error": "Restaurant not found"}), 404)
             return response
+    def delete(self, id):
+        restaurant = Restaurant.query.filter_by(id=id).first()
+        if restaurant:
+            RestaurantPizza.query.filter_by(restaurant_id=id).delete()
+            db.session.delete(restaurant)
+            db.session.commit()
+            response = make_response(jsonify(""), 204)
+            return response
+        else:
+            response = make_response(jsonify({ "error": "Restaurant not found"}), 404)
+            return response
+
 
 # class RestaurantData(Resource):
 #     def get(self, id):
@@ -97,6 +115,6 @@ class RestaurantByIdResource(Resource):
 # Add resources to the API
 api.add_resource(RestaurantsResource, '/restaurants')
 api.add_resource(RestaurantByIdResource, '/restaurants/<int:id>')
-# api.add_resource(RestaurantData, '/restaurants/<int:id>')
+api.add_resource(PizzaResource, '/pizzas')
 # api.add_resource(PizzasResource, '/pizzas')
 # api.add_resource(RestaurantPizzasResource, '/restaurant_pizzas')
