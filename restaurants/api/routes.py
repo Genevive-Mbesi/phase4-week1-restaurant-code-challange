@@ -1,5 +1,5 @@
 from api import db, api
-from flask import make_response, jsonify
+from flask import make_response, jsonify,request
 from flask_restful import Resource,reqparse 
 from .models import Restaurant
 from .models import Pizza
@@ -64,7 +64,32 @@ class RestaurantPizzaResource(Resource):
             {"id":rp.id,"price":rp.price}for rp in restaurant_pizzas
         ]
         return make_response(jsonify(restaurant_pizzas_dict),200)
-        
+    def post(self): 
+        try:
+            data = request.get_json()
+            rp = RestaurantPizza(
+                price=data["price"],
+                pizza_id=data["pizza_id"],
+                restaurant_id=data["restaurant_id"]
+            )
+            db.session.add(rp)
+            db.session.commit()
+            pizza = Pizza.query.filter_by(id=data["pizza_id"]).first()
+            pizza_dict = {
+                "id": pizza.id,
+                "name": pizza.name,
+                "ingredients": pizza.ingredients
+            }
+
+            response = make_response(jsonify(pizza_dict), 201)
+
+            return response
+        except ValueError as e:
+            response = make_response(jsonify({"errors": e.args}), 400)
+            return response
+        except Exception as e:
+            response = make_response(jsonify({"errors": e.args}), 400)
+            return response
 
 
 # Add resources to the API
