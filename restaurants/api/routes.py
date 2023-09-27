@@ -6,6 +6,11 @@ from .models import Pizza
 from .models import RestaurantPizza
 from datetime import datetime
 
+class HomeResource(Resource):
+    def get(self):
+        return "Restaurant Pizza api"
+api.add_resource(HomeResource,'/')
+
 class PizzaResource(Resource):
     def get(self):
         pizzas = Pizza.query.all()
