@@ -52,63 +52,13 @@ class RestaurantByIdResource(Resource):
             response = make_response(jsonify({ "error": "Restaurant not found"}), 404)
             return response
 
-
-# class RestaurantData(Resource):
-#     def get(self, id):
-#         restaurant = Restaurant.query.get(int(id))
-        
-#         if restaurant:
-#             response = response_serializer([restaurant])
-#             return response, 200
-#         else:
-#             return{"message":"Not found"}
-        
-    
-    # def delete(self,id):
-         
-        # pass
-
-# class PizzasResource(Resource):
-#     def get(self):
-#         Pizza = Pizza.query.all()
-#         response = response_serializer(Pizza)
-#         return response,200
-    
-#     def put(self,id):
-#         data = parser.parse_args() 
-
-#         print("===",data)
-#         date = datetime.strptime(data["created_at"],"%d/%m/%y") 
-#         data["created_at"]= date
-
-
-    # def _update_data(self,data, pizza,created_at,updated_at):
-    #     pizza.name = data["name"]
-    #     pizza.ingridients = data ["ingridients"]
-    #     pizza.created_at = created_at ["created_at"]
-    #     pizza.updated_at = updated_at["updated_at"]
-
-    #     db.session.add(pizza)
-    #     db.session.commit()
-
-    #     response =response_serializer([pizza])
-    #     return response,200
-
-# class RestaurantPizzasResource(Resource):
-#     def post(self):
-#         data = parser.parse_args() 
-
-#         print("===",data)
-#         date = datetime.strptime(data["created_at"],"%d/%m/%y") 
-#         data["created_at"]= date
-#         new_data = RestaurantPizza(**data)
-
-#         print("===new__value==",new_data)
-#         db.session.add[new_data]
-#         db.session.commit()
-#         data['created_at'] = str(date)
-#         return data, 201  
-
+class RestaurantPizzaResource(Resource):
+    def get (self):
+        restaurant_pizzas = RestaurantPizza.query.all()
+        restaurant_pizzas_dict =[
+            {"id":rp.id,"price":rp.price}for rp in restaurant_pizzas
+        ]
+        return make_response(jsonify(restaurant_pizzas_dict),200)
         
 
 
@@ -116,5 +66,4 @@ class RestaurantByIdResource(Resource):
 api.add_resource(RestaurantsResource, '/restaurants')
 api.add_resource(RestaurantByIdResource, '/restaurants/<int:id>')
 api.add_resource(PizzaResource, '/pizzas')
-# api.add_resource(PizzasResource, '/pizzas')
-# api.add_resource(RestaurantPizzasResource, '/restaurant_pizzas')
+api.add_resource(RestaurantPizzaResource,"/restaurant_pizzas")

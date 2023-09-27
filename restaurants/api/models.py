@@ -20,8 +20,7 @@ class Restaurant(db.Model, SerializerMixin):
         if restaurant:
             raise ValueError("Value must be unique")
         return name
-    def __repr__(self):
-        return f"<Restaurant {self.name} {self.address}>"
+    
 
     def __str__(self):
         return self.name
@@ -54,4 +53,3 @@ class RestaurantPizza(db.Model, SerializerMixin):
      else:
             raise ValueError("Price should between 1 and 30")
      
-
