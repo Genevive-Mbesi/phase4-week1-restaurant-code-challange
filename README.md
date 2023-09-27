@@ -33,7 +33,7 @@ Running the Server
 To start the Flask server, run the following command:
 python app.py
 
-The server will start, and you can access the API at http://localhost:5000.
+The server will start, and you can access the API at https://genevive-restaurant-pizza-api.onrender.com
 
 ## Testing Endpoints
 Use a tool like Postman or curl to test the API endpoints. 
